@@ -5,7 +5,8 @@ WORKDIR /tmp
 RUN apt update && \
     apt install -y dh-make quilt lsb-release debhelper dpkg-dev dh-systemd \
                    build-essential autoconf automake pkg-config libtool \
-                   libpcre++-dev zlib1g-dev libssl-dev wget
+                   libpcre++-dev zlib1g-dev libssl-dev wget && \
+    rm -rf /var/lib/apt/lists/*
 
 RUN wget https://nginx.org/download/nginx-1.19.2.tar.gz -O nginx.tar.gz && \
     tar -xzf nginx.tar.gz && \
@@ -33,7 +34,8 @@ FROM debian:buster-20200908
 COPY --from=0 /tmp/nginx_1.19.2-1~buster_amd64.deb /root/
 
 RUN apt update && \
-    apt install -y libssl1.1 lsb-base
+    apt install -y libssl1.1 lsb-base && \
+    rm -rf /var/lib/apt/lists/*
 
 RUN dpkg -i /root/nginx_1.19.2-1~buster_amd64.deb || true
 
